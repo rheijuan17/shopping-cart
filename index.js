@@ -126,8 +126,9 @@ const item2 = new Item('ult_small', 'Unlimited 1GB', 24.90);
 // const item4 = new Item('1gb', '1 GB Data-pack', 9.90);
 shoppingCartItems.push(
     new Item('ult_small', 'Unlimited 1GB', 24.90), 
-    new Item('ult_small', 'Unlimited 1GB', 24.90),
-    new Item('ult_small', 'Unlimited 1GB', 24.90),
+    new Item('1gb', '1 GB Data-pack', 9.90), 
+    // new Item('ult_small', 'Unlimited 1GB', 24.90),
+    // new Item('ult_small', 'Unlimited 1GB', 24.90),
     // new Item('ult_small', 'Unlimited 1GB', 24.90),
     // new Item('ult_small', 'Unlimited 1GB', 24.90),
     // new Item('ult_small', 'Unlimited 1GB', 24.90),
@@ -140,14 +141,15 @@ shoppingCartItems.push(
     // new Item('ult_medium', 'Unlimited 2GB', 29.90),
     // new Item('ult_medium', 'Unlimited 2GB', 29.90),
     // new Item('ult_medium', 'Unlimited 2GB', 29.90)
-    new Item('ult_large', 'Unlimited 5GB', 44.90),
+    // new Item('ult_large', 'Unlimited 5GB', 44.90),
     // new Item('ult_large', 'Unlimited 5GB', 44.90),
     // new Item('ult_large', 'Unlimited 5GB', 44.90),
     // new Item('ult_large', 'Unlimited 5GB', 44.90)
-)
-;
+);
 
 console.log('Creating promos');
+
+const PROMO_CODE = 'I<3AMAYSIM';
 
 promos.push(
     // Buy 2 for 3
@@ -182,7 +184,7 @@ promos.forEach((promo) => {
         return;
     }
 
-    if(!a[product].qty >= quantity) {
+    if(!(a[product].qty >= quantity)) {
         return;
     }
 
@@ -224,13 +226,17 @@ promos.forEach((promo) => {
     }
 });
 
-// // Compute the eme
+// Compute the eme
 console.log('Computing', a)
 console.log('Freebies are', free)
 
 console.log(Object.values(a))
 
-const total = Object.values(a).reduce((acc, item) => acc += (item.qty * item.price), 0).toFixed(2);
-console.log('total is', total)
+let total = Object.values(a).reduce((acc, item) => acc + (item.qty * item.price), 0);
+
+// Apply discount if PROMO_CODE exists
+if (PROMO_CODE) total *= 0.9;
+
+console.log(`total is ${total.toFixed(2)}`);
 
 
