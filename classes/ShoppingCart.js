@@ -6,6 +6,7 @@ export class ShoppingCart {
         this.items = [];
         this.promos = [];
         this.promoCode = '';
+        this.total = 0;
     }
 
     clearState() {
@@ -24,8 +25,6 @@ export class ShoppingCart {
     applyPromoCode(promoCode) {
         if(Object.keys(promoCodes).includes(promoCode))
             this.promoCode = promoCode;
-        else
-            console.log('Promo code is invalid');
     }
 
     checkout() {
@@ -39,24 +38,27 @@ export class ShoppingCart {
         });
 
         // Compute the total amount to pay for the user
-        let total = Array.from(itemCount.values()).reduce((acc, item) => acc + (item.qty * item.price), 0);
+        this.total = Array.from(itemCount.values()).reduce((acc, item) => acc + (item.qty * item.price), 0);
 
         // Apply discount if promo code is provided
-        if (this.promoCode) total *= (1- promoCodes[this.promoCode].value);
+        if (this.promoCode) this.total *= (1- promoCodes[this.promoCode].value);
 
-        const mergedMap = new Map(itemCount);
+        // Round off the total amount
+        this.total = this.total.toFixed(2);
+
+        const itemList = new Map(itemCount);
 
         free.forEach(({ qty }, key) => {
-            mergedMap.set(key, { qty: (mergedMap.get(key)?.qty || 0) + qty });
+            itemList.set(key, { qty: (itemList.get(key)?.qty || 0) + qty });
         });
 
         console.log('Displaying list of items for user');
 
-        mergedMap.forEach(({ qty }, key) => {
+        itemList.forEach(({ qty }, key) => {
             console.log(`${qty}x ${productList[key].name}`);
         });
         
-        console.log(`Total is ${total.toFixed(2)}`);
+        console.log(`Total is ${this.total}`);
 
         // Empty the cart 
         this.clearState();
@@ -74,14 +76,14 @@ export class ShoppingCart {
 
     applyPromo(promo, itemCount, free) {
         const { target: { quantity, product }, reward } = promo;
-    
+        
         if (!itemCount.has(product) || itemCount.get(product).qty < quantity) {
             return;
         }
     
         const count = itemCount.get(product).qty;
-        const awardQty = Math.floor(count / quantity);
-    
+        const awardQty = Math.floor(count / quantity) * reward.quantity; // Multiply with reward.quantity for multiple awarding
+
         switch (reward.type) {
             case 'extra':
                 itemCount.get(product).qty -= awardQty;

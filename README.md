@@ -56,10 +56,12 @@ new Promo({ quantity: 5, product: 'ult_small'}, { type: 'extra', quantity: 2})
 - Reward types and product list data are added in constants folder
 - Custom promo codes can be created but the discount will only apply to all items
 - Discount promos for the items will only be fixed price. This version does not support percentage discounts
+- If there will be multiple promos targeting the same item, the first promo inserted will be the priority
 
 ## Further Improvements
 
 - Data such as product list and reward types can be placed in a config file
+- Add priority for the ordering of traversing the promos
 
 ## Installation Instructions
 

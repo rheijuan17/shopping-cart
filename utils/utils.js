@@ -7,7 +7,7 @@ export function isInvalidFloat(value) {
 }
 
 export function isInvalidObject(value) {
-    return typeof value !== "object" && value === null;
+    return typeof value !== "object" || value === null;
 }
 
 export function isInvalidInteger(value) {

@@ -43,7 +43,7 @@ export class Promo {
         const { type } = reward;
 
         // Check if reward type is valid
-        if(typeof type !== "string" && !this.rewardTypes.includes(type)) {
+        if(typeof type !== "string" || !this.rewardTypes.includes(type)) {
             throw new Error("Reward type should be a string/ be a valid reward type");
         }
 
