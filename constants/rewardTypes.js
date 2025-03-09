@@ -1,0 +1,1 @@
+export const rewardTypes = ['extra', 'bundle', 'discount'];

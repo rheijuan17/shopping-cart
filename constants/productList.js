@@ -1,0 +1,1 @@
+export const productList = ['ult_small', 'ult_medium', 'ult_large', '1gb'];
