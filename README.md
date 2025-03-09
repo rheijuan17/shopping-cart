@@ -21,16 +21,12 @@ Amaysim is offering special promos during its initial launch of its new cart. Th
 
 Custom promos can be created with the target and reward attributes.
 
-##### Target
-
 Pertains to the pre-requisite for the user to be eligibile for the promo
 
-Attributes:
-
-- Quantity -> Quantity of the product to be eligible for the promo
-- Product -> Name of the product to be purchased
-
-##### Reward
+| Attribute | Description                                                 |
+| --------- | ----------------------------------------------------------- |
+| Quantity  | Quantity of the product bought to be eligible for the promo |
+| Product   | Name of the product to be purchased                         |
 
 Reward Descriptions
 
@@ -48,6 +44,13 @@ The table below shows which attribute is required for each reward type
 | Discount    | ❌       | ✅    | ❌      |
 | Bundle      | ✅       | ❌    | ✅      |
 
+A sample promo can be instantiated like this
+
+```
+// A user will receive 5 ult_small products for the price of 3
+new Promo({ quantity: 5, product: 'ult_small'}, { type: 'extra', quantity: 2})
+```
+
 ## Limitations
 
 - Reward types and product list data are added in constants folder
@@ -62,7 +65,7 @@ The table below shows which attribute is required for each reward type
 
 ### Prerequisites
 
-- List any dependencies or software required before installation (e.g., Node.js, PostgreSQL, Docker, etc.).
+- Node.js
 
 ### Steps to Install
 
