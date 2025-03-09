@@ -1,10 +1,10 @@
 import { isInvalidInteger, isInvalidObject } from '../utils/utils.js';
 import { rewardTypes } from "../constants/rewardTypes.js";
-import { productList } from "../constants/productList.js";
+import productList from "../constants/productList.js";
 
 export class Promo {
     constructor(target, reward) {
-        this.productList = productList;
+        this.productList = Object.keys(productList);
         this.rewardTypes = rewardTypes;
         this.setTarget(target);
         this.setReward(reward);

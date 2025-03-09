@@ -1,9 +1,15 @@
 import promoCodes from "../constants/promoCodes.js";
+import productList  from "../constants/productList.js";
 
 export class ShoppingCart {
     constructor() {
         this.items = [];
         this.promos = [];
+        this.promoCode = '';
+    }
+
+    clearState() {
+        this.items = [];
         this.promoCode = '';
     }
 
@@ -32,15 +38,28 @@ export class ShoppingCart {
             this.applyPromo(promo, itemCount, free);
         });
 
-        console.log('ItemCount is: ', itemCount)
-
         // Compute the total amount to pay for the user
         let total = Array.from(itemCount.values()).reduce((acc, item) => acc + (item.qty * item.price), 0);
 
         // Apply discount if promo code is provided
         if (this.promoCode) total *= (1- promoCodes[this.promoCode].value);
 
-        console.log(`total is ${total.toFixed(2)}`);
+        const mergedMap = new Map(itemCount);
+
+        free.forEach(({ qty }, key) => {
+            mergedMap.set(key, { qty: (mergedMap.get(key)?.qty || 0) + qty });
+        });
+
+        console.log('Displaying list of items for user');
+
+        mergedMap.forEach(({ qty }, key) => {
+            console.log(`${qty}x ${productList[key].name}`);
+        });
+        
+        console.log(`Total is ${total.toFixed(2)}`);
+
+        // Empty the cart 
+        this.clearState();
     }
 
     createItemCount() {
@@ -65,18 +84,15 @@ export class ShoppingCart {
     
         switch (reward.type) {
             case 'extra':
-                console.log('Awarding reduced price on items');
                 itemCount.get(product).qty -= awardQty;
                 this.updateFreeItems(free, product, awardQty, itemCount.get(product).price);
                 break;
     
             case 'bundle':
-                console.log('Awarding freebie/s');
                 this.updateFreeItems(free, reward.freebie, awardQty);
                 break;
     
             case 'discount':
-                console.log('Awarding a discount');
                 itemCount.get(product).price = reward.price;
                 break;
         }
