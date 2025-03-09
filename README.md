@@ -84,3 +84,7 @@ new Promo({ quantity: 5, product: 'ult_small'}, { type: 'extra', quantity: 2})
    ```sh
    npm start
    ```
+4. Run tests of the application:
+   ```sh
+   npm test
+   ```
