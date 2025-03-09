@@ -1,4 +1,4 @@
-const productList = ['ult_small', 'ult_medium', 'ult_large', '1gb'];
+import promoCodes from "../constants/promoCodes.js";
 
 export class ShoppingCart {
     constructor() {
@@ -8,15 +8,18 @@ export class ShoppingCart {
     }
 
     addItem(item) {
-        this.items.push(item)
+        this.items.push(item);
     }
 
     addPromo(promos) {
-        this.promos.push(promos)
+        this.promos.push(promos);
     }
 
     applyPromoCode(promoCode) {
-        this.promoCode = promoCode
+        if(Object.keys(promoCodes).includes(promoCode))
+            this.promoCode = promoCode;
+        else
+            console.log('Promo code is invalid');
     }
 
     checkout() {
@@ -34,8 +37,8 @@ export class ShoppingCart {
         // Compute the total amount to pay for the user
         let total = Array.from(itemCount.values()).reduce((acc, item) => acc + (item.qty * item.price), 0);
 
-        // Apply discount if PROMO_CODE exists
-        if (this.promoCode) total *= 0.9;
+        // Apply discount if promo code is provided
+        if (this.promoCode) total *= (1- promoCodes[this.promoCode].value);
 
         console.log(`total is ${total.toFixed(2)}`);
     }
@@ -68,7 +71,7 @@ export class ShoppingCart {
                 break;
     
             case 'bundle':
-                console.log('Awarding a freebie', reward);
+                console.log('Awarding freebie/s');
                 this.updateFreeItems(free, reward.freebie, awardQty);
                 break;
     
